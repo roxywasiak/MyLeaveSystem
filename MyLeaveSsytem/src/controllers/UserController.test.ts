@@ -7,7 +7,7 @@ import { ResponseHandler } from '../helper/ResponseHandler';
 import { Request, Response } from 'express';
 import * as classValidator from "class-validator";
 import * as classTransformer from "class-transformer";
-import { mock } from "jest-mock-extended"; 
+import { mock, MockProxy } from "jest-mock-extended"; 
 
 const VALIDATOR_CONSTRAINT_PASSWORD_AT_LEAST_10_CHARS = 'Password must be at least 10 characters long';
 
@@ -61,7 +61,7 @@ describe('UserController', () => {
     let mockUserRepository: jest.Mocked<Repository<User>>;
 
     beforeEach(() => {
-        mockUserRepository = mock<Repository<User>>();
+        mockUserRepository = mock() as jest.Mocked<Repository<User>>;
 
         // Inject the mocked repository into UserController
         userController = new UserController();
