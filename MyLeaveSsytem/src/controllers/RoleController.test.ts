@@ -6,7 +6,7 @@ import { ResponseHandler } from '../helper/ResponseHandler';
 import { Request, Response } from 'express';
 import { DeleteResult } from 'typeorm'; 
 import * as classValidator from "class-validator";
-import { mock } from "jest-mock-extended"; 
+import { mock } from "jest-mock-extended";
 
 const VALIDATOR_CONSTRAINT_NAME_IS_REQUIRED = "Name is required";
 const VALIDATOR_CONSTRAINT_EMPTY_OR_WHITESPACE = "Name cannot be empty or whitespace";
