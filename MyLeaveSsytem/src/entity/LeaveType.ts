@@ -6,7 +6,7 @@ import {
     OneToMany,
   } from "typeorm";
   import { Length } from "class-validator";
-  import { LeaveRequest } from "./LeaveRequest";
+  import { LeaveRequest } from "../entity/LeaveRequest";
   
   @Entity("leavetype")
   export class LeaveType {
@@ -29,4 +29,4 @@ import {
     @OneToMany(() => LeaveRequest, (lr) => lr.leaveType)
     leaveRequests!: LeaveRequest[];
   }
-  
+ 

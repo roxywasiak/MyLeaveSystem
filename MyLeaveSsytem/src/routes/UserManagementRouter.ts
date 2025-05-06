@@ -5,6 +5,7 @@ import { UserManagementController } from "../controllers/UserManagementControlle
 import { verifyToken } from "../middleware/authMiddleware";
 import { authoriseRoles } from "../middleware/roleMiddleware";
 
+
 export class UserManagementRouter implements IRouter {
   public routeName    = "UserManagement";
   public basePath     = "/api/usermanagement";

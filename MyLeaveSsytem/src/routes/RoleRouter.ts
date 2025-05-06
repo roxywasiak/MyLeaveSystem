@@ -1,5 +1,6 @@
 import { Router } from "express";  
-import { IRouter } from "./IRouter";
+import { IRouter } from "../interfaces/IRouter";
+
 import { IEntityController } from "../controllers/IEntityController";
 
 export class RoleRouter implements IRouter{

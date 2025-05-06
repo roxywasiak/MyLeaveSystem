@@ -26,6 +26,9 @@ export class User {
     @ManyToOne(() => Role,  { nullable: false, eager: true })
     @IsNotEmpty({ message: 'Role is required' })
     role: Role; 
+    managedBy: any;
+    manages: any;
+  leaveRequests: any;
 
     @BeforeInsert()
     hashPassword() {
