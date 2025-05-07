@@ -13,7 +13,7 @@ describe("User Entity tests", () => {
 
     beforeEach(() => {
         //before each test reset the following:
-        mockUserRepository = mock<Repository<User>>();
+        mockUserRepository = mock() as jest.Mocked<Repository<User>>;
 
         role = new Role();
         role.id = 1;
