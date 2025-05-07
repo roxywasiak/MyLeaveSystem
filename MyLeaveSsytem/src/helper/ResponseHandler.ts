@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Logger } from './Logger';
+// import { Logger } from './Logger';
 import { StatusCodes } from 'http-status-codes';
 
 export class ResponseHandler {
@@ -10,7 +10,7 @@ export class ResponseHandler {
         // Metadata can be added as optional
     ): Response {
         const timestamp = new Date().toISOString();
-        Logger.error(`[Error]: ${message}`, `${timestamp}`);
+        console.error(`[Error]: ${message}`, `${timestamp}`);
 
         const errorResponse = {
             error: {

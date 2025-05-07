@@ -2,10 +2,11 @@ import "reflect-metadata";
 import express from "express";
 import { DataSource } from "typeorm";
 import morgan, {StreamOptions} from "morgan";
-import { Logger } from "./helper/Logger";
+// import { Logger } from "./helper/Logger";
 import { MiddlewareFactory } from "./helper/MiddlewareFactory";
 import { IRouter} from "./routes/IRouter";
 import { ErrorHandler } from "./helper/ErrorHandler";
+import { Console } from "console";
 
 export class Server {
     public static readonly ERROR_TOKEN_IS_INVALID = "Not authorised - Token is invalid";
@@ -27,7 +28,7 @@ export class Server {
     private initialiseMiddlewares() {
         const morganStream: StreamOptions = {
             write: (message: string): void => {
-                Logger.info(message.trim());  
+                 console.info(message.trim());  
             }
         };
 
@@ -66,7 +67,7 @@ export class Server {
     public async start() {
         await this.initialiseDataSource();
         this.app.listen(this.port, () => {
-            Logger.info(`Server running on http://localhost:${this.port}`);
+            console.info(`Server running on http://localhost:${this.port}`);
         });
     }
 
@@ -74,10 +75,10 @@ export class Server {
         try {
             await this.appDataSource.initialize();
 
-            Logger.info("Data Source initialised");
+            console.info("Data Source initialised");
         } catch (error) {
-            Logger.error("Error during initialisation:", error);
-            throw error;
+          console.error("Error during initialisation:", error);
+         throw error;
         }
     }
 }

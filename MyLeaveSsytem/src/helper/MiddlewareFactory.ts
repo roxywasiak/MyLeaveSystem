@@ -1,6 +1,6 @@
 import { RequestHandler, Request, Response, NextFunction } from "express";
 import { IAuthenticatedJWTRequest } from "../types/IAuthenticatedJWTRequest";
-import { Logger } from "../helper/Logger";
+// import { Logger } from "../helper/Logger";
 import { ResponseHandler } from "../helper/ResponseHandler";
 import { StatusCodes } from "http-status-codes";
 import rateLimit from "express-rate-limit";
@@ -36,10 +36,10 @@ export class MiddlewareFactory {
             const email = req.signedInUser?.email;
 
             if (email) {
-                Logger.info(`${route} rate limited for ${email} @ ${req.ip}`);
+                console.info(`${route} rate limited for ${email} @ ${req.ip}`);
                 MiddlewareFactory.jwtRateLimiter(email)(req, res, next);
             } else {
-                Logger.error("JWT missing email claim.");
+                console.error("JWT missing email claim.");
                 ResponseHandler.sendErrorResponse(res, StatusCodes.BAD_REQUEST, "Missing email in token.");
             }
         };
@@ -48,7 +48,7 @@ export class MiddlewareFactory {
     // Log route access
     static logRouteAccess(route: string): RequestHandler {
         return (req: Request, _res: Response, next: NextFunction) => {
-            Logger.info(`Route accessed: [${route}] by ${req.ip}`);
+            console.info(`Route accessed: [${route}] by ${req.ip}`);
             next();
         };
     }
@@ -58,7 +58,7 @@ export class MiddlewareFactory {
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
-            Logger.error("Auth header not found");
+       console.error("Auth header not found");
             ResponseHandler.sendErrorResponse(res, StatusCodes.UNAUTHORIZED, "Not authorised - Token not found");
         }
 
@@ -66,13 +66,13 @@ export class MiddlewareFactory {
         const jwtSecret = process.env.JWT_SECRET;
 
         if (!jwtSecret) {
-            Logger.error("JWT_SECRET is not defined");
+          console.error("JWT_SECRET is not defined");
             throw new Error("Token secret not found/defined");
         }
 
         jwt.verify(tokenReceived, jwtSecret, (err, payload) => {
             if (err || !payload || typeof payload !== "object") {
-                Logger.error("Invalid JWT token");
+            console.error("Invalid JWT token");
                 return ResponseHandler.sendErrorResponse(res, StatusCodes.UNAUTHORIZED, "Not authorised - Token is invalid");
             }
 
@@ -85,7 +85,7 @@ export class MiddlewareFactory {
                 req.signedInUser = { email, role };
                 next();
             } catch {
-                Logger.error("JWT payload malformed");
+                console.error("JWT payload malformed");
                 ResponseHandler.sendErrorResponse(res, StatusCodes.UNAUTHORIZED, "Not authorised - Token is invalid");
             }
         });

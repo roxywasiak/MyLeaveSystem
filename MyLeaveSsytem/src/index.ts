@@ -1,5 +1,7 @@
 // src/index.ts
-
+import "reflect-metadata";
+import dotenv from "dotenv";
+dotenv.config();
 import { Server } from "./Server";
 import { Router } from "express";
 import { AppDataSource } from "./data-source";

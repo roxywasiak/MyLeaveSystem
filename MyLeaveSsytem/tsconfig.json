@@ -11,8 +11,9 @@
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
       "sourceMap": true,
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
    },
-  "include":  ["src/**/*"],
+  "include":  ["src/"],
   "exclude": ["node_modules"] 
 }
