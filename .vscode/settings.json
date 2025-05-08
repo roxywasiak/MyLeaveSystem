@@ -9,9 +9,9 @@
             "server": "localhost",
             "port": 3306,
             "driver": "MySQL",
-            "name": "new connection ",
             "database": "leave_management",
-            "username": "root"
+            "username": "root",
+            "name": "MyLocalDB"
         }
     ]
 }
