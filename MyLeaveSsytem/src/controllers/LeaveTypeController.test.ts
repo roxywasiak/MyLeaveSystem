@@ -1,6 +1,6 @@
 // src/controllers/LeaveTypeController.test.ts
 
-import { mockDeep } from 'jest-mock-extended';
+import { mock } from 'jest-mock-extended';
 import type { DeepMockProxy } from 'jest-mock-extended';
 // import { MockProxy } from 'jest-mock-extended';
 import { Repository, DeleteResult } from 'typeorm';
@@ -41,15 +41,15 @@ describe('LeaveTypeController', () => {
     return t;
   }
 
-  let repo:DeepMockProxy<Repository<LeaveType>>;
+  let mockRepo:jest.Mocked<Repository<LeaveType>>;
   let ctrl: LeaveTypeController;
   let req: Partial<Request>;
   let res: Partial<Response>;
 
   beforeEach(() => {
-    repo = mockDeep() as DeepMockProxy<Repository<LeaveType>>;
+    mockRepo = mock() as jest.Mocked<Repository<LeaveType>>;
     ctrl = new LeaveTypeController();
-    (ctrl as any).repo = repo;
+    (ctrl as any).repo = mockRepo;
 
     req = { params: {}, body: {} };
     res = {};
@@ -59,11 +59,11 @@ describe('LeaveTypeController', () => {
   describe('getAll()', () => {
     it('returns all leave types', async () => {
       const list = [ makeLeaveType(), makeLeaveType(2, 'Sick') ];
-      repo.find.mockResolvedValue(list);
+      mockRepo.find.mockResolvedValue(list);
 
       await ctrl.getAll(req as Request, res as Response);
 
-      expect(repo.find).toHaveBeenCalled();
+      expect(mockRepo.find).toHaveBeenCalled();
       expect(ResponseHandler.sendSuccessResponse)
         .toHaveBeenCalledWith(res, list);
     });
@@ -78,7 +78,7 @@ describe('LeaveTypeController', () => {
 
     it('throws AppError when not found', async () => {
       req.params = { id: NOT_FOUND_ID };
-      repo.findOneBy.mockResolvedValue(null);
+      mockRepo.findOneBy.mockResolvedValue(null);
       await expect(ctrl.getById(req as Request, res as Response))
         .rejects.toBeInstanceOf(AppError);
     });
@@ -86,11 +86,11 @@ describe('LeaveTypeController', () => {
     it('returns the leave type when found', async () => {
       const entity = makeLeaveType(3, 'Bereavement');
       req.params = { id: '3' };
-      repo.findOneBy.mockResolvedValue(entity);
+      mockRepo.findOneBy.mockResolvedValue(entity);
 
       await ctrl.getById(req as Request, res as Response);
 
-      expect(repo.findOneBy).toHaveBeenCalledWith({ leaveTypeId: 3 });
+      expect(mockRepo.findOneBy).toHaveBeenCalledWith({ leaveTypeId: 3 });
       expect(ResponseHandler.sendSuccessResponse)
         .toHaveBeenCalledWith(res, entity);
     });
@@ -116,11 +116,11 @@ describe('LeaveTypeController', () => {
         maxRollOverDays: dto.maxRollOverDays
       };
       (classValidator.validate as jest.Mock).mockResolvedValue([]);
-      repo.save.mockResolvedValue(dto);
+      mockRepo.save.mockResolvedValue(dto);
 
       await ctrl.create(req as Request, res as Response);
 
-      expect(repo.save).toHaveBeenCalledWith(expect.objectContaining({ name: dto.name }));
+      expect(mockRepo.save).toHaveBeenCalledWith(expect.objectContaining({ name: dto.name }));
       expect(ResponseHandler.sendSuccessResponse)
         .toHaveBeenCalledWith(res, dto, StatusCodes.CREATED);
     });
@@ -135,7 +135,7 @@ describe('LeaveTypeController', () => {
 
     it('throws AppError when entity not found', async () => {
       req.params = { id: '5' };
-      repo.findOneBy.mockResolvedValue(null);
+      mockRepo.findOneBy.mockResolvedValue(null);
       await expect(ctrl.update(req as Request, res as Response))
         .rejects.toBeInstanceOf(AppError);
     });
@@ -144,7 +144,7 @@ describe('LeaveTypeController', () => {
       const existing = makeLeaveType(1);
       req.params = { id: '1' };
       req.body   = { name: '' };
-      repo.findOneBy.mockResolvedValue(existing);
+      mockRepo.findOneBy.mockResolvedValue(existing);
       (classValidator.validate as jest.Mock).mockResolvedValue([
         { constraints: { isNotEmpty: 'Name required' } }
       ]);
@@ -158,13 +158,13 @@ describe('LeaveTypeController', () => {
       const updated  = makeLeaveType(1, 'UpdatedHoliday');
       req.params = { id: '1' };
       req.body   = { name: 'UpdatedHoliday' };
-      repo.findOneBy.mockResolvedValue(existing);
+      mockRepo.findOneBy.mockResolvedValue(existing);
       (classValidator.validate as jest.Mock).mockResolvedValue([]);
-      repo.save.mockResolvedValue(updated);
+      mockRepo.save.mockResolvedValue(updated);
 
       await ctrl.update(req as Request, res as Response);
 
-      expect(repo.save).toHaveBeenCalledWith(expect.objectContaining({ name: 'UpdatedHoliday' }));
+      expect(mockRepo.save).toHaveBeenCalledWith(expect.objectContaining({ name: 'UpdatedHoliday' }));
       expect(ResponseHandler.sendSuccessResponse)
         .toHaveBeenCalledWith(res, updated);
     });
@@ -179,11 +179,11 @@ describe('LeaveTypeController', () => {
 
     it('returns 204 on successful delete', async () => {
       req.params = { id: '2' };
-      repo.delete.mockResolvedValue({ affected: 1 } as DeleteResult);
+      mockRepo.delete.mockResolvedValue({ affected: 1 } as DeleteResult);
 
       await ctrl.delete(req as Request, res as Response);
 
-      expect(repo.delete).toHaveBeenCalledWith(2);
+      expect(mockRepo.delete).toHaveBeenCalledWith(2);
       expect(ResponseHandler.sendSuccessResponse)
         .toHaveBeenCalledWith(res, null, StatusCodes.NO_CONTENT);
     });
