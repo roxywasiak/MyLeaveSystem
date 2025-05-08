@@ -1,7 +1,8 @@
 // src/controllers/LeaveTypeController.test.ts
 
-import { mockDeep, MockProxy } from 'jest-mock-extended';
-import {mock} from 'jest-mock-extended';
+import { mockDeep } from 'jest-mock-extended';
+import type { DeepMockProxy } from 'jest-mock-extended';
+// import { MockProxy } from 'jest-mock-extended';
 import { Repository, DeleteResult } from 'typeorm';
 import { Request, Response }       from 'express';
 import { StatusCodes }             from 'http-status-codes';
@@ -19,11 +20,11 @@ jest.mock('class-validator', () => ({
 }));
 
 describe('LeaveTypeController', () => {
-  // Test constants
+ 
   const INVALID_ID      = 'abc';
   const NOT_FOUND_ID    = '99';
 
-  // Helper to build a LeaveType instance
+  
   function makeLeaveType(
     id: number = 1,
     name: string = 'Vacation',
@@ -40,15 +41,14 @@ describe('LeaveTypeController', () => {
     return t;
   }
 
-  let repo: MockProxy<Repository<LeaveType>>;
+  let repo:DeepMockProxy<Repository<LeaveType>>;
   let ctrl: LeaveTypeController;
   let req: Partial<Request>;
   let res: Partial<Response>;
 
   beforeEach(() => {
-    repo = mockDeep() as MockProxy<Repository<LeaveType>>;
+    repo = mockDeep() as DeepMockProxy<Repository<LeaveType>>;
     ctrl = new LeaveTypeController();
-    // inject mock repository
     (ctrl as any).repo = repo;
 
     req = { params: {}, body: {} };
