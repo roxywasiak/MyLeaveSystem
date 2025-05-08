@@ -33,7 +33,8 @@
    "scripts": {
       "start": "ts-node src/index.ts",
       "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
-      "typeorm": "typeorm-ts-node-commonjs"
+      "typeorm": "typeorm-ts-node-commonjs",
+      "test":  "jest --verbose"
    },
    "main": "jest.config.js",
    "keywords": [],
