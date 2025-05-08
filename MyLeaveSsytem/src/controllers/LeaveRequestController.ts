@@ -82,4 +82,19 @@ export class LeaveRequestController implements IEntityController {
     }
     ResponseHandler.sendSuccessResponse(res, null, StatusCodes.NO_CONTENT);
   };
-}
+  
+    async cancel(req: Request, res: Response): Promise<void> {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        throw new AppError('Invalid ID', StatusCodes.BAD_REQUEST);
+      }
+  
+      const result = await this.repo.update(id, { status: LeaveStatus.Cancelled });
+      if (result.affected === 0) {
+        throw new AppError('Leave request not found', StatusCodes.NOT_FOUND);
+      }
+  
+      ResponseHandler.sendSuccessResponse(res, { message: 'Leave request cancelled successfully' });
+    }
+  }
+
