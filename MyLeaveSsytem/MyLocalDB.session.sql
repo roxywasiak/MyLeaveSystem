@@ -1,1 +1,0 @@
-SELECT * FROM leave_management
